@@ -19,11 +19,10 @@ class Nav extends Component {
     }
 
     render() {
-        console.log(this.state.navButton)
         return (
-            <nav className="main-nav" onChange={this.handleClick}>
+            <nav className="main-nav">
                 <ul>
-                    <li><NavLink onChange={this.onSearchChange} to='/cats'>Cats</NavLink></li>
+                    <li><NavLink to='/cats'>Cats</NavLink></li>
                     <li><NavLink to='/dogs'>Dogs</NavLink></li>
                     <li><NavLink to='/computers'>Computers</NavLink></li>
                 </ul>
