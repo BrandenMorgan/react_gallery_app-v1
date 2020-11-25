@@ -6,15 +6,24 @@ import {
 } from 'react-router-dom';
 import './App.css';
 
-import Photo from './components/Photo';
+// import Photo from './components/Photo';
 import Nav from './components/Nav';
 import SearchForm from './components/SearchForm';
-import Home from './components/Home';
+// import Home from './components/Home';
 import Gallery from './components/Gallery';
+import NotFound404 from './components/NotFound404';
 
 import apiKey from './config';
 
 const key = apiKey;
+
+// const getTitles = (arr) => {
+//   const titles = [];
+//   for (let obj of arr) {
+//     titles.push(obj.title);
+//   }
+//   return titles;
+// }
 
 class App extends Component {
   constructor() {
@@ -22,36 +31,41 @@ class App extends Component {
     this.state = {
       images: [],
       cats: [],
+      catTitle: 'cats',
       dogs: [],
+      dogTitle: 'dogs',
       computers: [],
-      loading: true
+      computerTitle: 'computers',
+      loading: true,
+      title: ''
     };
   }
 
   componentDidMount() {
     this.performSearch();
-    // this.performSearch('cats');
-    // this.performSearch('dogs');
-    // this.performSearch('computers');
+    this.catSearch();
+    this.dogSearch();
+    this.computerSearch();
   }
 
-  performSearch = (query = 'vacations') => {
-    const defaultUrl = `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${key}&tags=${query}&per_page=24&format=json&nojsoncallback=1`;
-    const cats = `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${key}&tags=cats&per_page=24&format=json&nojsoncallback=1`;
-    const dogs = `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${key}&tags=dogs&per_page=24&format=json&nojsoncallback=1`;
-    const computers = `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${key}&tags=computers&per_page=24&format=json&nojsoncallback=1`;
+  catSearch = (query = 'cats') => {
+    const cats = `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${key}&tags=${query}&per_page=24&format=json&nojsoncallback=1`;
     fetch(cats)
       .then(res => res.json())
       .then(resData => {
         this.setState({
           cats: resData.photos.photo,
           loading: false
+
         })
       })
       .catch(error => {
         console.log('Error fetching and parsing data', error)
       })
+  }
 
+  dogSearch = (query = 'dogs') => {
+    const dogs = `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${key}&tags=${query}&per_page=24&format=json&nojsoncallback=1`;
     fetch(dogs)
       .then(res => res.json())
       .then(resData => {
@@ -63,7 +77,10 @@ class App extends Component {
       .catch(error => {
         console.log('Error fetching and parsing data', error)
       })
+  }
 
+  computerSearch = (query = 'computers') => {
+    const computers = `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${key}&tags=${query}&per_page=24&format=json&nojsoncallback=1`;
     fetch(computers)
       .then(res => res.json())
       .then(resData => {
@@ -75,13 +92,17 @@ class App extends Component {
       .catch(error => {
         console.log('Error fetching and parsing data', error)
       })
+  }
 
-    fetch(defaultUrl)
+  performSearch = (query = 'vacations') => {
+    const url = `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${key}&tags=${query}&per_page=24&format=json&nojsoncallback=1`;
+    fetch(url)
       .then(res => res.json())
       .then(resData => {
         this.setState({
           images: resData.photos.photo,
-          loading: false
+          loading: false,
+          title: query
         })
       })
       .catch(error => {
@@ -90,26 +111,26 @@ class App extends Component {
   }
 
   render() {
-    console.log("cats: ", this.state.cats);
     return (
       <BrowserRouter>
         <div className="container">
           <SearchForm onSearch={this.performSearch} />
           <Nav />
           <Switch>
-            <Route exact path='/' render={() => <Gallery data={this.state.images} />} />
-            <Route path='/cats' render={() => <Gallery data={this.state.cats} />} />
-            <Route path='/dogs' render={() => <Gallery data={this.state.dogs} />} />
-            <Route path='/computers' render={() => <Gallery data={this.state.computers} />} />
+
+            {
+              (this.state.loading)
+                ? <p>...Loading</p>
+                : <Route exact path='/' render={() => <Gallery data={this.state.images} title={this.state.title} />} />
+            }
+            {/* <Route exact path='/' render={() => <Gallery data={this.state.images} />} /> */}
+
+            <Route path='/cats' render={() => <Gallery data={this.state.cats} title={this.state.catTitle} />} />
+            <Route path='/dogs' render={() => <Gallery data={this.state.dogs} title={this.state.dogTitle} />} />
+            <Route path='/computers' render={() => <Gallery data={this.state.computers} title={this.state.computerTitle} />} />
+            <Route component={NotFound404} />
           </Switch>
-          {/* {
-            (this.state.loading)
-              ? <p>...Loading</p>
-              : <Gallery data={this.state.images} />
-          } */}
-
         </div>
-
       </BrowserRouter>
 
     );

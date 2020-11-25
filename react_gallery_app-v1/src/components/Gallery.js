@@ -17,6 +17,7 @@ const Gallery = (props) => {
     }
     return (
         <div className="photo-container">
+            <h2>{props.title}</h2>
             <ul>
                 {images}
             </ul>
