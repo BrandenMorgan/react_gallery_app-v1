@@ -4,22 +4,25 @@ import NotFound from './NotFound';
 
 const Gallery = (props) => {
     const results = props.data;
-    let images;
-    if (results.length) {
-        images = results.map(image =>
-            <Photo
-                url={`https://farm${image.farm}.staticflickr.com/${image.server}/${image.id}_${image.secret}.jpg`}
-                key={image.id}
-            />
-        );
-    } else {
-        images = <NotFound />
-    }
+    let images = results.map(image =>
+        <Photo
+            url={`https://farm${image.farm}.staticflickr.com/${image.server}/${image.id}_${image.secret}.jpg`}
+            key={image.id}
+        />
+    );
     return (
         <div className="photo-container">
-            <h2>{props.title}</h2>
+            {
+                (images.length)
+                    ? <h2>Results for "{props.title}"</h2>
+                    : <h2></h2>
+            }
             <ul>
-                {images}
+                {
+                    (images.length)
+                        ? images
+                        : <NotFound search={props.title} />
+                }
             </ul>
         </div>
     );

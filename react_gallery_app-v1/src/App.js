@@ -6,38 +6,28 @@ import {
 } from 'react-router-dom';
 import './App.css';
 
-// import Photo from './components/Photo';
 import Nav from './components/Nav';
 import SearchForm from './components/SearchForm';
-// import Home from './components/Home';
 import Gallery from './components/Gallery';
 import NotFound404 from './components/NotFound404';
 
 import apiKey from './config';
-
 const key = apiKey;
 
-// const getTitles = (arr) => {
-//   const titles = [];
-//   for (let obj of arr) {
-//     titles.push(obj.title);
-//   }
-//   return titles;
-// }
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
       images: [],
+      title: '',
       cats: [],
       catTitle: 'cats',
       dogs: [],
       dogTitle: 'dogs',
       computers: [],
       computerTitle: 'computers',
-      loading: true,
-      title: ''
+      loading: true
     };
   }
 
@@ -108,6 +98,9 @@ class App extends Component {
       .catch(error => {
         console.log('Error fetching and parsing data', error)
       })
+    this.setState({
+      loading: true
+    })
   }
 
   render() {
@@ -117,14 +110,12 @@ class App extends Component {
           <SearchForm onSearch={this.performSearch} />
           <Nav />
           <Switch>
-
             {
               (this.state.loading)
-                ? <p>...Loading</p>
+                ? <React.Fragment>...Loading</React.Fragment>
                 : <Route exact path='/' render={() => <Gallery data={this.state.images} title={this.state.title} />} />
             }
-            {/* <Route exact path='/' render={() => <Gallery data={this.state.images} />} /> */}
-
+            {/* <Route path='/:search' render={() => <Gallery data={this.state.images} title={this.state.title} />} /> */}
             <Route path='/cats' render={() => <Gallery data={this.state.cats} title={this.state.catTitle} />} />
             <Route path='/dogs' render={() => <Gallery data={this.state.dogs} title={this.state.dogTitle} />} />
             <Route path='/computers' render={() => <Gallery data={this.state.computers} title={this.state.computerTitle} />} />
