@@ -104,6 +104,7 @@ class App extends Component {
   }
 
   render() {
+    // console.log(this);
     return (
       <BrowserRouter>
         <div className="container">
@@ -115,7 +116,9 @@ class App extends Component {
                 ? <React.Fragment>...Loading</React.Fragment>
                 : <Route exact path='/' render={() => <Gallery data={this.state.images} title={this.state.title} />} />
             }
-            <Route exact path='/search' render={() => <SearchForm onSearch={this.performSearch} />} />
+            <Route exact path='/search' render={() => <SearchForm title={this.state.title} onSearch={this.performSearch} />} />
+
+
             <Route path='/search/:query' render={() => <Gallery data={this.state.images} title={this.state.title} />} />
             {/* <Route path='/:query' render={() => <Gallery data={this.state.images} title={this.state.title} />} /> */}
             {/* <Route exact path='/search' render={() => <SearchForm onSearch={this.performSearch} />} />

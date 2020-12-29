@@ -7,22 +7,30 @@ class SearchForm extends Component {
         searchText: ''
     }
 
-    onSearchChange = e => {
-        this.setState({ searchText: e.target.value });
+    onSearchChange = (e) => {
+        // this.setState({ searchText: e.target.value });
+        this.setState(prevState => {
+            return { searchText: prevState.searchText }
+        })
     }
 
     handleSubmit = e => {
         e.preventDefault();
         let query = this.query.value;
-        // let path = `search/${query}`;
+        let path = `search/${query}`;
         this.props.onSearch(query);
-        this.props.history.push(`search/${query}`);
+        // this.props.history.push(`search/${query}`);
+        this.props.history.push(path);
+        console.log("1: ", path);
+        console.log("2: ", this.props.match.path);
+        console.log("3: ", this.props.title);
         // this.props.history.push('/');
         e.currentTarget.reset();
     }
 
     render() {
         // console.log(this.props.history)
+        // console.log(this.props.match.path)
         return (
             <form className="search-form" onSubmit={this.handleSubmit}>
                 <input type="search"
