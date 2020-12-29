@@ -4,6 +4,7 @@ import Nav from './Nav';
 import SearchForm from './SearchForm';
 import Gallery from './Gallery';
 
+// Not being used
 const Home = (props) => {
     return (
         <div className="container">

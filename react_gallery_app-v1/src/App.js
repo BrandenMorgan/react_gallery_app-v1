@@ -38,8 +38,8 @@ class App extends Component {
     this.computerSearch();
   }
 
-  catSearch = (query = 'cats') => {
-    const cats = `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${key}&tags=${query}&per_page=24&format=json&nojsoncallback=1`;
+  catSearch = () => {
+    const cats = `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${key}&tags=cats&per_page=24&format=json&nojsoncallback=1`;
     fetch(cats)
       .then(res => res.json())
       .then(resData => {
@@ -54,8 +54,8 @@ class App extends Component {
       })
   }
 
-  dogSearch = (query = 'dogs') => {
-    const dogs = `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${key}&tags=${query}&per_page=24&format=json&nojsoncallback=1`;
+  dogSearch = () => {
+    const dogs = `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${key}&tags=dogs&per_page=24&format=json&nojsoncallback=1`;
     fetch(dogs)
       .then(res => res.json())
       .then(resData => {
@@ -69,8 +69,8 @@ class App extends Component {
       })
   }
 
-  computerSearch = (query = 'computers') => {
-    const computers = `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${key}&tags=${query}&per_page=24&format=json&nojsoncallback=1`;
+  computerSearch = () => {
+    const computers = `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${key}&tags=computers&per_page=24&format=json&nojsoncallback=1`;
     fetch(computers)
       .then(res => res.json())
       .then(resData => {
@@ -84,7 +84,7 @@ class App extends Component {
       })
   }
 
-  performSearch = (query = 'vacations') => {
+  performSearch = (query = "pictures") => {
     const url = `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${key}&tags=${query}&per_page=24&format=json&nojsoncallback=1`;
     fetch(url)
       .then(res => res.json())
@@ -107,7 +107,7 @@ class App extends Component {
     return (
       <BrowserRouter>
         <div className="container">
-          <SearchForm onSearch={this.performSearch} />
+          {/* <SearchForm onSearch={this.performSearch} /> */}
           <Nav />
           <Switch>
             {
@@ -115,7 +115,12 @@ class App extends Component {
                 ? <React.Fragment>...Loading</React.Fragment>
                 : <Route exact path='/' render={() => <Gallery data={this.state.images} title={this.state.title} />} />
             }
-            {/* <Route path='/:search' render={() => <Gallery data={this.state.images} title={this.state.title} />} /> */}
+            <Route exact path='/search' render={() => <SearchForm onSearch={this.performSearch} />} />
+            <Route path='/search/:query' render={() => <Gallery data={this.state.images} title={this.state.title} />} />
+            {/* <Route path='/:query' render={() => <Gallery data={this.state.images} title={this.state.title} />} /> */}
+            {/* <Route exact path='/search' render={() => <SearchForm onSearch={this.performSearch} />} />
+            <Route path='/search/:query' render={() => <SearchForm onSearch={this.performSearch} />} /> */}
+
             <Route path='/cats' render={() => <Gallery data={this.state.cats} title={this.state.catTitle} />} />
             <Route path='/dogs' render={() => <Gallery data={this.state.dogs} title={this.state.dogTitle} />} />
             <Route path='/computers' render={() => <Gallery data={this.state.computers} title={this.state.computerTitle} />} />
