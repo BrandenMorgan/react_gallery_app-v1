@@ -20,13 +20,13 @@ class App extends Component {
     super();
     this.state = {
       images: [],
-      title: '',
+      query: '',
       cats: [],
       catTitle: 'cats',
-      dogs: [],
-      dogTitle: 'dogs',
-      computers: [],
-      computerTitle: 'computers',
+      javascript: [],
+      javascriptTitle: 'javascript',
+      coffee: [],
+      coffeeTitle: 'coffee',
       loading: true
     };
   }
@@ -34,8 +34,8 @@ class App extends Component {
   componentDidMount() {
     this.performSearch();
     this.catSearch();
-    this.dogSearch();
-    this.computerSearch();
+    this.javascriptSearch();
+    this.coffeeSearch();
   }
 
   catSearch = () => {
@@ -54,13 +54,13 @@ class App extends Component {
       })
   }
 
-  dogSearch = () => {
-    const dogs = `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${key}&tags=dogs&per_page=24&format=json&nojsoncallback=1`;
-    fetch(dogs)
+  javascriptSearch = () => {
+    const javascript = `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${key}&tags=javascript&per_page=24&format=json&nojsoncallback=1`;
+    fetch(javascript)
       .then(res => res.json())
       .then(resData => {
         this.setState({
-          dogs: resData.photos.photo,
+          javascript: resData.photos.photo,
           loading: false
         })
       })
@@ -69,13 +69,13 @@ class App extends Component {
       })
   }
 
-  computerSearch = () => {
-    const computers = `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${key}&tags=computers&per_page=24&format=json&nojsoncallback=1`;
-    fetch(computers)
+  coffeeSearch = () => {
+    const coffee = `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${key}&tags=coffee&per_page=24&format=json&nojsoncallback=1`;
+    fetch(coffee)
       .then(res => res.json())
       .then(resData => {
         this.setState({
-          computers: resData.photos.photo,
+          coffee: resData.photos.photo,
           loading: false
         })
       })
@@ -84,7 +84,7 @@ class App extends Component {
       })
   }
 
-  performSearch = (query = "pictures") => {
+  performSearch = (query = "pacific northwest") => {
     const url = `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${key}&tags=${query}&per_page=24&format=json&nojsoncallback=1`;
     fetch(url)
       .then(res => res.json())
@@ -92,7 +92,7 @@ class App extends Component {
         this.setState({
           images: resData.photos.photo,
           loading: false,
-          title: query
+          query: query
         })
       })
       .catch(error => {
@@ -104,29 +104,21 @@ class App extends Component {
   }
 
   render() {
-    // console.log(this);
     return (
       <BrowserRouter>
         <div className="container">
-          {/* <SearchForm onSearch={this.performSearch} /> */}
           <Nav />
           <Switch>
             {
               (this.state.loading)
                 ? <React.Fragment>...Loading</React.Fragment>
-                : <Route exact path='/' render={() => <Gallery data={this.state.images} title={this.state.title} />} />
+                : <Route exact path='/' render={() => <Gallery data={this.state.images} query={this.state.query} />} />
             }
-            <Route exact path='/search' render={() => <SearchForm title={this.state.title} onSearch={this.performSearch} />} />
-
-
-            <Route path='/search/:query' render={() => <Gallery data={this.state.images} title={this.state.title} />} />
-            {/* <Route path='/:query' render={() => <Gallery data={this.state.images} title={this.state.title} />} /> */}
-            {/* <Route exact path='/search' render={() => <SearchForm onSearch={this.performSearch} />} />
-            <Route path='/search/:query' render={() => <SearchForm onSearch={this.performSearch} />} /> */}
-
-            <Route path='/cats' render={() => <Gallery data={this.state.cats} title={this.state.catTitle} />} />
-            <Route path='/dogs' render={() => <Gallery data={this.state.dogs} title={this.state.dogTitle} />} />
-            <Route path='/computers' render={() => <Gallery data={this.state.computers} title={this.state.computerTitle} />} />
+            <Route exact path='/search' render={() => <SearchForm query={this.state.query} onSearch={this.performSearch} />} />
+            <Route path='/search/:query' render={() => <Gallery data={this.state.images} query={this.state.query} onSearch={this.performSearch} />} />
+            <Route path='/cats' render={() => <Gallery data={this.state.cats} query={this.state.catTitle} />} />
+            <Route path='/javascript' render={() => <Gallery data={this.state.javascript} query={this.state.javascriptTitle} />} />
+            <Route path='/coffee' render={() => <Gallery data={this.state.coffee} query={this.state.coffeeTitle} />} />
             <Route component={NotFound404} />
           </Switch>
         </div>

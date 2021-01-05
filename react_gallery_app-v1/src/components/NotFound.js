@@ -1,5 +1,6 @@
 import React from 'react';
 
+// works most of the time
 const NotFound = (props) => {
     return (
         <li className="not-found">
