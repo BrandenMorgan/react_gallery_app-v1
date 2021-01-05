@@ -4,68 +4,32 @@ import { withRouter } from 'react-router';
 class SearchForm extends Component {
 
     state = {
-        // prevSearchText: '',
-        // currentSearchText: ''
         searchText: ''
     }
 
     onSearchChange = (e) => {
         this.setState({ searchText: e.target.value });
-        // this.setState(prevState => {
-        //     return {
-        //         currentSearchText: e.target.value,
-        //         prevSearchText: prevState.currentSearchText
-        //     };
-        // },
-        //     () => console.log(this.state)
-        // );
-        // this.setState({
-        //     currentSearchText: e.target.value,
-        //     prevSearchText: ''
-        // }, () => console.log(this.state));
-
     }
 
     handleSubmit = e => {
+        /**
+         * 
+         * @param {str} str 
+         */
+        function fixedEncodeURIComponent(str) {
+            return encodeURIComponent(str).replace(/[!'()*]/g, function (c) {
+                return '%' + c.charCodeAt(0).toString(16);
+            });
+        }
         e.preventDefault();
-        let query = this.query.value;
+        let query = fixedEncodeURIComponent(this.query.value);
         let path = `search/${query}`;
         this.props.onSearch(query);
-        // this.props.history.push(`search/${query}`);
         this.props.history.push(path);
-        // this.setState(prevState => {
-        //     return {
-        //         currentSearchText: e.target.value,
-        //         prevSearchText: prevState.currentSearchText
-        //     };
-        // },
-        //     () => console.log("Made it to handleSubmit", this.state)
-        // );
-        // console.log("query: ", query);
-        // console.log("query part of path: ", path.slice(7));
-
-        // console.log("currentSearchText: ", this.state.currentSearchText);
-        // console.log("prevSearchText: ", this.state.prevSearchText);
-        // console.log('searchText: ', this.state.searchText);
-        // console.log("history: ", this.props.history.location.pathname);
-        // console.log("match: ", this.props.match)
-        console.log("title prop: ", this.props.title);
-
-
-        if (path.slice(7) === this.state.searchText) {
-            console.log("Do not perform new search");
-        } else {
-            console.log("Perform new search");
-        }
         e.currentTarget.reset();
-
     };
 
     render() {
-        // console.log("history: ", this.props.history.location.pathname);
-        // console.log("from SearchForm: ", this.props.match.params.query)
-        // console.log(this.props.match)
-        // console.log(this.props.title);
         return (
             <form className="search-form" onSubmit={this.handleSubmit}>
                 <input type="search"

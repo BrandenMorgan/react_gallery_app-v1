@@ -12,7 +12,6 @@ import Gallery from './components/Gallery';
 import NotFound404 from './components/NotFound404';
 
 import apiKey from './config';
-const key = apiKey;
 
 
 class App extends Component {
@@ -39,7 +38,7 @@ class App extends Component {
   }
 
   catSearch = () => {
-    const cats = `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${key}&tags=cats&per_page=24&format=json&nojsoncallback=1`;
+    const cats = `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=cats&per_page=24&format=json&nojsoncallback=1`;
     fetch(cats)
       .then(res => res.json())
       .then(resData => {
@@ -55,7 +54,7 @@ class App extends Component {
   }
 
   javascriptSearch = () => {
-    const javascript = `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${key}&tags=javascript&per_page=24&format=json&nojsoncallback=1`;
+    const javascript = `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=javascript&per_page=24&format=json&nojsoncallback=1`;
     fetch(javascript)
       .then(res => res.json())
       .then(resData => {
@@ -70,7 +69,7 @@ class App extends Component {
   }
 
   coffeeSearch = () => {
-    const coffee = `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${key}&tags=coffee&per_page=24&format=json&nojsoncallback=1`;
+    const coffee = `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=coffee&per_page=24&format=json&nojsoncallback=1`;
     fetch(coffee)
       .then(res => res.json())
       .then(resData => {
@@ -85,7 +84,7 @@ class App extends Component {
   }
 
   performSearch = (query = "pacific northwest") => {
-    const url = `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${key}&tags=${query}&per_page=24&format=json&nojsoncallback=1`;
+    const url = `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${query}&per_page=24&format=json&nojsoncallback=1`;
     fetch(url)
       .then(res => res.json())
       .then(resData => {

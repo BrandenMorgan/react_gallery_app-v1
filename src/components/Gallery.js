@@ -6,7 +6,7 @@ import { withRouter } from 'react-router';
 
 const Gallery = (props) => {
     const url = props.history.location.pathname.slice(8);
-    let results = props.data;
+    const results = props.data;
     let images;
     if (url === props.query || url === '' || url === 'ipt') {
         images = results.map(image =>
@@ -27,9 +27,9 @@ const Gallery = (props) => {
     return (
         <div className="photo-container">
             {
-                (images.length && url !== "")
+                (images.length && props.history.location.pathname !== '/')
                     ? <h2>Results for "{props.query}"</h2>
-                    : <h2></h2>
+                    : <h2> </h2>
             }
             <ul>
                 {
