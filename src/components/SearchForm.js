@@ -1,41 +1,62 @@
 import React, { Component } from 'react';
+
+// Access the history object
 import { withRouter } from 'react-router';
 
+/**
+ * A class component which renders a search form and stores the state of it
+ */
 class SearchForm extends Component {
 
     state = {
         searchText: ''
     }
-
+    // Update the state to whatever the user types in to the search field.
     onSearchChange = (e) => {
         this.setState({ searchText: e.target.value });
     }
-
+    /**
+     * Method to process user input when submitted
+     * @param {Object} e The event object
+     */
     handleSubmit = e => {
         /**
-         * 
-         * @param {str} str 
+         * Function to process any characters that would break url during a search  e.g. "?" or "%"
+         * translates them to their character codes 
+         * @param {string} str 
+         * @return {string} The character code 
          */
         function fixedEncodeURIComponent(str) {
             return encodeURIComponent(str).replace(/[!'()*]/g, function (c) {
                 return '%' + c.charCodeAt(0).toString(16);
             });
         }
+        // prevent default browser behavior
         e.preventDefault();
+        /* 
+            Translate any URL encoding. this.query.value is a ref to what the user types in the input. 
+            See input element below. 
+        */
         let query = fixedEncodeURIComponent(this.query.value);
         let path = `search/${query}`;
+        // Call onSearch which was what was passed to this component from the App.js component. Give it the user query 
         this.props.onSearch(query);
+        // Push the path to the history object to keep track of browser history
         this.props.history.push(path);
+        // Reset the input field
         e.currentTarget.reset();
     };
 
     render() {
         return (
+            // Pass a reference to handleSubmit method to onSubmit attribute
             <form className="search-form" onSubmit={this.handleSubmit}>
                 <input type="search"
+                    // Pass a reference to onSearchChange to onChange to update state when a user submits the form
                     onChange={this.onSearchChange}
                     name="search"
                     placeholder="Search"
+                    // A reference to user input. See handleSubmit method
                     ref={(input) => this.query = input}
                     required />
                 <button type="submit" className="search-button">
@@ -49,5 +70,5 @@ class SearchForm extends Component {
     }
 
 }
-
+// Wrapping a component in "withRouter" grants access to the history object.
 export default withRouter(SearchForm);

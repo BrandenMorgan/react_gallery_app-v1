@@ -1,12 +1,18 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-
-const Photo = (props) => {
+// Renders each indivdual photo
+const Photo = ({ url }) => {
     return (
         <li>
-            <img src={props.url} alt="" />
+            <img src={url} alt="" />
         </li>
     );
 }
+
+// Type check props 
+Photo.propTypes = {
+    url: PropTypes.string
+};
 
 export default Photo;

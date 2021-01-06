@@ -1,5 +1,6 @@
 import React from 'react';
 
+// Renders when there is no route to match the current URL
 const NotFound404 = () => {
     return (
         <li className="not-found">

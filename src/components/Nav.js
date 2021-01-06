@@ -1,7 +1,9 @@
 import React from 'react';
+
+// A special version of Link adds styling attributes to the rendered element when it matches the current URL
 import { NavLink } from 'react-router-dom';
 
-
+// A functional component which renders navigation links
 const Nav = () => {
     return (
         <nav className="main-nav">
