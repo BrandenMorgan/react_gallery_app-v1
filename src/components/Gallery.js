@@ -17,7 +17,6 @@ const Gallery = (props) => {
     // Photo data returned from fetch API
     const results = props.data;
     let images;
-
     /* 
         Make sure current url matches the latest query saved in state 
         If it does, do not perform a new search. ( 'ipt' are the remaining characters starting on the 8th 
@@ -43,15 +42,18 @@ const Gallery = (props) => {
             />
         );
     }
+
     return (
         <div className="photo-container">
             {/* 
-            If there are image results and the path name to render those results isn't '/' show a search
-            results message as a header. Otherwise don't show the message. 
-        */}
+                If there are image results and the path name to render those results isn't '/' show a search
+                results message as a header. Otherwise don't show the message. decodeURIComponent used here to
+                decode reserved URI characters back to their original characters to display a user friendly
+                message. e.g. %25 -> % etc. "Results for '%'" instead of "Results for '%25'"
+            */}
             {
                 (images.length && props.history.location.pathname !== '/')
-                    ? <h2>Results for "{props.query}"</h2>
+                    ? <h2>Results for "{decodeURIComponent(props.query)}"</h2>
                     : <h2> </h2>
             }
             <ul>
