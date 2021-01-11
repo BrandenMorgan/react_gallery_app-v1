@@ -11,9 +11,9 @@ import { withRouter } from 'react-router';
 
 // Renders photos to the page
 const Gallery = (props) => {
+
     // Get access to everything after "/search/"
     const url = props.history.location.pathname.slice(8);
-
     // Photo data returned from fetch API
     const results = props.data;
     let images;
@@ -22,26 +22,44 @@ const Gallery = (props) => {
         If it does, do not perform a new search. ( 'ipt' are the remaining characters starting on the 8th 
         in the default javascript search in the Nav component) 
     */
+
     if (url === props.query || url === '' || url === 'ipt') {
+        // console.log("No new search", url, props.query)
         images = results.map(image =>
             <Photo
                 url={`https://farm${image.farm}.staticflickr.com/${image.server}/${image.id}_${image.secret}.jpg`}
                 key={image.id}
+                server={image.server}
             />
         );
     } else {
+        console.log("From gallery: ", props.query);
+
         /*
             If it doesn't match, perform a new search and render the results. This is what makes the browser
             search history work.
         */
+
         props.onSearch(url);
         images = results.map(image =>
             <Photo
                 url={`https://farm${image.farm}.staticflickr.com/${image.server}/${image.id}_${image.secret}.jpg`}
                 key={image.id}
+                server={image.server}
             />
         );
+        props.loading();
+        // some condition that only calls props.loading() if true 
+        // if () {
+        //     props.loading();
+        // }
+
     }
+
+
+
+
+
 
     return (
         <div className="photo-container">
@@ -53,7 +71,7 @@ const Gallery = (props) => {
             */}
             {
                 (images.length && props.history.location.pathname !== '/')
-                    ? <h2>Results for "{decodeURIComponent(props.query)}"</h2>
+                    ? <h2>Results for <em>"{decodeURIComponent(props.query)}"</em></h2>
                     : <h2> </h2>
             }
             <ul>

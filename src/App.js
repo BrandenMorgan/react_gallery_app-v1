@@ -46,7 +46,9 @@ class App extends Component {
     this.catSearch();
     this.javascriptSearch();
     this.coffeeSearch();
+
   }
+
 
   // Fetches default cat pictures and stores them in state through flickr API
   catSearch = () => {
@@ -102,6 +104,7 @@ class App extends Component {
    * @param {String} query The users search query with a default of "pacific northwest" if one is not provided 
    */
   performSearch = (query = "pacific northwest") => {
+    console.log("From app: ", query)
     const url = `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${query}&per_page=24&format=json&nojsoncallback=1`;
     fetch(url)
       .then(res => res.json())
@@ -115,10 +118,15 @@ class App extends Component {
       .catch(error => {
         console.log('Error fetching and parsing data', error)
       })
-    this.setState({
-      loading: true
-    })
+    // this.setState({
+    //   loading: true
+    // })
   }
+
+  trueLoadingState = () => {
+    this.setState({ loading: true })
+  }
+
 
   render() {
     return (
@@ -135,10 +143,11 @@ class App extends Component {
                 ? <React.Fragment>...Loading</React.Fragment>
                 : <Route exact path='/' render={() => <Gallery data={this.state.images} query={this.state.query} />} />
             }
+
             {/* A route that renders the <SearchForm /> component with props, query and onSearch */}
             <Route exact path='/search' render={() => <SearchForm query={this.state.query} onSearch={this.performSearch} />} />
             {/* A route that renders the <Gallery /> component with props, data, query and onSearch */}
-            <Route path='/search/:query' render={() => <Gallery data={this.state.images} query={this.state.query} onSearch={this.performSearch} />} />
+            <Route path='/search/:query' render={() => <Gallery data={this.state.images} query={this.state.query} onSearch={this.performSearch} loading={this.trueLoadingState} />} />
             {/* A route that renders the <Gallery /> component of cat pictures with props, data and query */}
             <Route path='/cats' render={() => <Gallery data={this.state.cats} query={this.state.catTitle} />} />
             {/* A route that renders the <Gallery /> component of javascript pictures with props, data and query */}
@@ -153,5 +162,6 @@ class App extends Component {
 
     );
   }
+
 }
 export default App;
