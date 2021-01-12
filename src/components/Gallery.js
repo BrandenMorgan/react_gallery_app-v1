@@ -24,7 +24,6 @@ const Gallery = (props) => {
     */
 
     if (url === props.query || url === '' || url === 'ipt') {
-        // console.log("No new search", url, props.query)
         images = results.map(image =>
             <Photo
                 url={`https://farm${image.farm}.staticflickr.com/${image.server}/${image.id}_${image.secret}.jpg`}
@@ -33,8 +32,6 @@ const Gallery = (props) => {
             />
         );
     } else {
-        console.log("From gallery: ", props.query);
-
         /*
             If it doesn't match, perform a new search and render the results. This is what makes the browser
             search history work.
@@ -48,18 +45,7 @@ const Gallery = (props) => {
                 server={image.server}
             />
         );
-        props.loading();
-        // some condition that only calls props.loading() if true 
-        // if () {
-        //     props.loading();
-        // }
-
     }
-
-
-
-
-
 
     return (
         <div className="photo-container">
