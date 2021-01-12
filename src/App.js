@@ -104,22 +104,28 @@ class App extends Component {
    * @param {String} query The users search query with a default of "pacific northwest" if one is not provided 
    */
   performSearch = (query = "pacific northwest") => {
-    const url = `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${query}&per_page=24&format=json&nojsoncallback=1`;
-    fetch(url)
-      .then(res => res.json())
-      .then(resData => {
+    let setLoading = new Promise((res, rej) => {
+      res(() => {
         this.setState({
-          images: resData.photos.photo,
-          loading: false,
-          query: query
+          loading: true
+        });
+      });
+    });
+    setLoading.then(() => {
+      const url = `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${query}&per_page=24&format=json&nojsoncallback=1`;
+      fetch(url)
+        .then(res => res.json())
+        .then(resData => {
+          this.setState({
+            images: resData.photos.photo,
+            loading: false,
+            query: query
+          })
         })
-      })
-      .catch(error => {
-        console.log('Error fetching and parsing data', error)
-      })
-    this.setState({
-      loading: true
-    })
+        .catch(error => {
+          console.log('Error fetching and parsing data', error)
+        });
+    });
   }
 
   render() {
